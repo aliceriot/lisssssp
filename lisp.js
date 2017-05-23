@@ -1,5 +1,5 @@
 // L I S S S S S P (LI5P)
-// 
+//
 // I'm writing lisp, in JS! It's going to be terrible
 // and also fun.
 
@@ -8,29 +8,29 @@
 
 // Before we can do that though, let's write down which things
 // are valid in our lisp!
-const LEFT_PAREN = 'LEFT_PAREN';
+const LEFT_PAREN = 'LEFT_PAREN'
 
-const RIGHT_PAREN = 'RIGHT_PAREN';
+const RIGHT_PAREN = 'RIGHT_PAREN'
 
-const NUM_LITERAL = 'NUM_LITERAL';
+const NUM_LITERAL = 'NUM_LITERAL'
 
 const chop = (regex, string) => string
-  .replace(regex, "")
-  .replace(/^\s*/, "")
+  .replace(regex, '')
+  .replace(/^\s*/, '')
 
 const lex = (string, tokens = []) => {
   // handle base case
-  if ( string === "") {
-    return [];
+  if (string === '') {
+    return []
   }
 
   // parentheses
   if (string.match(/^\(/)) {
-    return tokens.concat({ type: LEFT_PAREN }, lex(chop(/^\(/, string)));
+    return tokens.concat({ type: LEFT_PAREN }, lex(chop(/^\(/, string)))
   }
 
   if (string.match(/^\)/)) {
-    return tokens.concat({type: RIGHT_PAREN}, lex(chop(/^\)/, string)));
+    return tokens.concat({type: RIGHT_PAREN}, lex(chop(/^\)/, string)))
   }
 
   // number literals
@@ -38,12 +38,11 @@ const lex = (string, tokens = []) => {
     return tokens.concat({
       type: NUM_LITERAL,
       value: parseInt(string.match(/^\d+/))
-    }, lex(chop(/^\d+/, string)));
+    }, lex(chop(/^\d+/, string)))
   }
 
-  return [];
-};
-
+  return []
+}
 
 module.exports = {
   lex: lex,
@@ -52,7 +51,7 @@ module.exports = {
     LEFT_PAREN,
     RIGHT_PAREN,
     NUM_LITERAL,
-    chop,
+    chop
   }
 
-};
+}
