@@ -14,16 +14,45 @@ const RIGHT_PAREN = 'RIGHT_PAREN';
 
 const NUM_LITERAL = 'NUM_LITERAL';
 
-const chop = (regex, string) => string.replace(regex, "")
+const chop = (regex, string) => string
+  .replace(regex, "")
+  .replace(/^\s*/, "")
 
 const lexer = (string, tokens = []) => {
+  // handle base case
+  if ( string === "") {
+    return [];
+  }
+
   // parentheses
-  if (string.match(/\(/)) {
+  if (string.match(/^\(/)) {
     return tokens.concat({ type: LEFT_PAREN }, lexer(chop(/^\(/, string)));
   }
+
+  if (string.match(/^\)/)) {
+    return tokens.concat({type: RIGHT_PAREN}, lexer(chop(/^\)/, string)));
+  }
+
+  // number literals
+  if (string.match(/^\d+/)) {
+    return tokens.concat({
+      type: NUM_LITERAL,
+      value: parseInt(string.match(/^\d+/))
+    }, lexer(chop(/^\d+/, string)));
+  }
+
+  return [];
 };
 
 
 module.exports = {
-  lexer
+  lexer: lexer,
+
+  __test__: {
+    LEFT_PAREN,
+    RIGHT_PAREN,
+    NUM_LITERAL,
+    chop,
+  }
+
 };

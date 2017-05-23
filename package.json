@@ -4,7 +4,8 @@
   "description": "",
   "main": "lisp.js",
   "scripts": {
-    "test": "ava"
+    "test": "ava lisp_test.js",
+    "watch": "ava --watch lisp_test.js"
   },
   "author": "Alice Pote",
   "license": "ISC",
