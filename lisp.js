@@ -18,7 +18,7 @@ const chop = (regex, string) => string
   .replace(regex, "")
   .replace(/^\s*/, "")
 
-const lexer = (string, tokens = []) => {
+const lex = (string, tokens = []) => {
   // handle base case
   if ( string === "") {
     return [];
@@ -26,11 +26,11 @@ const lexer = (string, tokens = []) => {
 
   // parentheses
   if (string.match(/^\(/)) {
-    return tokens.concat({ type: LEFT_PAREN }, lexer(chop(/^\(/, string)));
+    return tokens.concat({ type: LEFT_PAREN }, lex(chop(/^\(/, string)));
   }
 
   if (string.match(/^\)/)) {
-    return tokens.concat({type: RIGHT_PAREN}, lexer(chop(/^\)/, string)));
+    return tokens.concat({type: RIGHT_PAREN}, lex(chop(/^\)/, string)));
   }
 
   // number literals
@@ -38,7 +38,7 @@ const lexer = (string, tokens = []) => {
     return tokens.concat({
       type: NUM_LITERAL,
       value: parseInt(string.match(/^\d+/))
-    }, lexer(chop(/^\d+/, string)));
+    }, lex(chop(/^\d+/, string)));
   }
 
   return [];
@@ -46,7 +46,7 @@ const lexer = (string, tokens = []) => {
 
 
 module.exports = {
-  lexer: lexer,
+  lex: lex,
 
   __test__: {
     LEFT_PAREN,

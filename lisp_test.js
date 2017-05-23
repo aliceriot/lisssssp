@@ -1,5 +1,5 @@
 const { 
-  lexer,
+  lex,
   __test__: {
     chop,
     LEFT_PAREN,
@@ -18,24 +18,24 @@ test('chop should remove leading whitespace, after character matches', t => {
   t.is(chop(/abc/, 'abc  def'), 'def')
 })
 
-test('lexer should lex left paren', t => {
+test('lex should lex left paren', t => {
   let string = "("
-  t.deepEqual(lexer(string), [ { type: LEFT_PAREN }])
+  t.deepEqual(lex(string), [ { type: LEFT_PAREN }])
 })
 
-test('lexer should lex multiple left parens', t => {
-  t.deepEqual(lexer("(("), [1,2].map(() => ({ type: LEFT_PAREN })))
+test('lex should lex multiple left parens', t => {
+  t.deepEqual(lex("(("), [1,2].map(() => ({ type: LEFT_PAREN })))
 })
 
-test('lexer should lex right paren', t => {
-  t.deepEqual(lexer(")"), [{ type: RIGHT_PAREN }])
+test('lex should lex right paren', t => {
+  t.deepEqual(lex(")"), [{ type: RIGHT_PAREN }])
 })
 
-test('lexer should lex multiple right parens', t => {
-  t.deepEqual(lexer("))"), [1,2].map(() => ({ type: RIGHT_PAREN })))
+test('lex should lex multiple right parens', t => {
+  t.deepEqual(lex("))"), [1,2].map(() => ({ type: RIGHT_PAREN })))
 })
 
-test('lexer should lex num literal', t => {
+test('lex should lex num literal', t => {
   [
     ["5", [5]],
     ["55", [55]],
@@ -44,8 +44,6 @@ test('lexer should lex num literal', t => {
     ["123 938 333", [123, 938, 333]]
   ].forEach(([string, expectation]) => {
     let expected =  expectation.map(val => ({type: NUM_LITERAL, value: val }))
-    t.deepEqual(lexer(string), expected)
+    t.deepEqual(lex(string), expected)
   })
 })
-
-
