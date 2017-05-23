@@ -8,7 +8,5 @@
   },
   "author": "Alice Pote",
   "license": "ISC",
-  "dependencies": {
-    "mocha": "^3.4.1"
-  }
+  "dependencies": {}
 }
