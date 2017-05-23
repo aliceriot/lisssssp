@@ -10,6 +10,15 @@ const {
 
 const test = require('ava')
 
+let leftParen = { type: LEFT_PAREN };
+
+let rightParen = { type: RIGHT_PAREN };
+
+const numExp = n => ({
+  type: NUM_LITERAL,
+  value: n
+})
+
 test('chop should remove characters matching regex', t => {
   t.is(chop(/abc/, 'abcdef'), 'def')
 })
@@ -20,7 +29,7 @@ test('chop should remove leading whitespace, after character matches', t => {
 
 test('lex should lex left paren', t => {
   let string = '('
-  t.deepEqual(lex(string), [{ type: LEFT_PAREN }])
+  t.deepEqual(lex(string), [leftParen])
 })
 
 test('lex should lex multiple left parens', t => {
@@ -29,6 +38,10 @@ test('lex should lex multiple left parens', t => {
 
 test('lex should lex right paren', t => {
   t.deepEqual(lex(')'), [{ type: RIGHT_PAREN }])
+})
+
+test('lex should let you get a lot of parens going', t => {
+  t.deepEqual(lex("(((((((((((((((("), Array.apply(null, { length: 16 }).map(() => leftParen))
 })
 
 test('lex should lex multiple right parens', t => {
@@ -46,4 +59,9 @@ test('lex should lex num literal', t => {
     let expected = expectation.map(val => ({ type: NUM_LITERAL, value: val }))
     t.deepEqual(lex(string), expected)
   })
+})
+
+test('lex should lex numbers and parens', t => {
+  let expected = [leftParen, numExp(3), numExp(4), rightParen];
+  t.deepEqual(lex("( 3 4     )"), expected)
 })
