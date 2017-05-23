@@ -4,9 +4,11 @@
   "description": "",
   "main": "lisp.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava"
   },
   "author": "Alice Pote",
   "license": "ISC",
-  "dependencies": {}
+  "dependencies": {
+    "ava": "^0.19.1"
+  }
 }
