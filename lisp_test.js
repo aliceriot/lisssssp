@@ -20,7 +20,7 @@ test('chop should remove leading whitespace, after character matches', t => {
 
 test('lex should lex left paren', t => {
   let string = '('
-  t.deepEqual(lex(string), [ { type: LEFT_PAREN }])
+  t.deepEqual(lex(string), [{ type: LEFT_PAREN }])
 })
 
 test('lex should lex multiple left parens', t => {
@@ -43,7 +43,7 @@ test('lex should lex num literal', t => {
     ['123 3', [123, 3]],
     ['123 938 333', [123, 938, 333]]
   ].forEach(([string, expectation]) => {
-    let expected = expectation.map(val => ({type: NUM_LITERAL, value: val }))
+    let expected = expectation.map(val => ({ type: NUM_LITERAL, value: val }))
     t.deepEqual(lex(string), expected)
   })
 })
