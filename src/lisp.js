@@ -13,10 +13,24 @@ export const RIGHT_PAREN = 'RIGHT_PAREN'
 
 export const NUM_LITERAL = 'NUM_LITERAL'
 
+export const STRING_LITERAL = 'STRING_LITERAL'
+
+export const IDENTIFIER = 'IDENTIFIER'
+
+const parseString = match => {
+  return match[0]
+    .replace(/^"/, "")
+    .replace(/"$/, "")
+}
+
+const getIdentifier = match => match[0]
+
 export const LISP_TOKEN_MANIFEST = [
   { type: LEFT_PAREN, regex: /^\(/ },
   { type: RIGHT_PAREN, regex: /^\)/ },
-  { type: NUM_LITERAL, regex: /^\d+/, valueFunc: parseInt }
+  { type: NUM_LITERAL, regex: /^\d+/, valueFunc: parseInt },
+  { type: STRING_LITERAL, regex: /^".*"/, valueFunc: parseString },
+  { type: IDENTIFIER, regex: /^[A-Za-z]+/, valueFunc: getIdentifier }
 ]
 
 export const lex = lexer(LISP_TOKEN_MANIFEST)

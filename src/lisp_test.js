@@ -4,7 +4,9 @@ import {
   lex,
   LEFT_PAREN,
   RIGHT_PAREN,
-  NUM_LITERAL
+  NUM_LITERAL,
+  STRING_LITERAL,
+  IDENTIFIER,
 } from './lisp.js'
 
 let leftParen = { type: LEFT_PAREN }
@@ -14,6 +16,16 @@ let rightParen = { type: RIGHT_PAREN }
 const numExp = n => ({
   type: NUM_LITERAL,
   value: n
+})
+
+const stringLiteral = str => ({
+  type: STRING_LITERAL,
+  value: str
+})
+
+const identifier = id => ({
+  type: IDENTIFIER,
+  value: id
 })
 
 test('lex should lex left paren', t => {
@@ -53,4 +65,30 @@ test('lex should lex num literal', t => {
 test('lex should lex numbers and parens', t => {
   let expected = [leftParen, numExp(3), numExp(4), rightParen]
   t.deepEqual(lex('( 3 4     )'), expected)
+})
+
+test('lex should lex string literals', t => {
+  let expected = [stringLiteral('mystring')]
+  t.deepEqual(lex('"mystring"'), expected)
+})
+
+test('lex should mix strings, nums, parens', t => {
+  let lisp = '("foo" 3 345 () )'
+  let expected = [
+    leftParen,
+    stringLiteral("foo"),
+    numExp(3),
+    numExp(345),
+    leftParen,
+    rightParen,
+    rightParen
+  ];
+  t.deepEqual(lex(lisp), expected)
+})
+
+test('lex should support identifiers', t => {
+  let lisp = '(add 2 3)'
+  let expected = [leftParen, identifier('add'), numExp(2), numExp(3), rightParen]
+  t.deepEqual(lex(lisp), expected)
+
 })
