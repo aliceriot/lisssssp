@@ -17,6 +17,6 @@ export const LISP_TOKEN_MANIFEST = [
   { type: LEFT_PAREN, regex: /^\(/ },
   { type: RIGHT_PAREN, regex: /^\)/ },
   { type: NUM_LITERAL, regex: /^\d+/, valueFunc: parseInt }
-];
+]
 
 export const lex = lexer(LISP_TOKEN_MANIFEST)

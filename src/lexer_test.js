@@ -10,4 +10,3 @@ test('chop should remove leading whitespace, after character matches', t => {
   t.is(chop(/abc/, 'abc  def'), 'def')
 })
 
-
