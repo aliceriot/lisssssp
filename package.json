@@ -6,7 +6,6 @@
   "scripts": {
     "test": "ava",
     "watch": "ava --watch",
-    "build": "babel lisp.js",
     "lint": "standard",
     "fmt": "standard --fix"
   },
