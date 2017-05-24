@@ -5,5 +5,5 @@ export const curry = fn => {
       ? fn(...args)
       : acc(...args)
   }
-  return acc
+  return acc(...[])
 }

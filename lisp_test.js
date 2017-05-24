@@ -1,12 +1,12 @@
+import test from 'ava'
+
 import {
   lex,
-    chop,
-    LEFT_PAREN,
-    RIGHT_PAREN,
-    NUM_LITERAL
+  chop,
+  LEFT_PAREN,
+  RIGHT_PAREN,
+  NUM_LITERAL
 } from './lisp.js'
-
-const test = require('ava')
 
 let leftParen = { type: LEFT_PAREN }
 
