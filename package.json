@@ -6,7 +6,9 @@
   "scripts": {
     "test": "ava",
     "watch": "ava --watch",
-    "build": "babel lisp.js"
+    "build": "babel lisp.js",
+    "lint": "standard",
+    "fmt": "standard --fix"
   },
   "author": "Alice Pote",
   "license": "ISC",
