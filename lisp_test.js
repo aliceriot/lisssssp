@@ -4,13 +4,13 @@ import {
     LEFT_PAREN,
     RIGHT_PAREN,
     NUM_LITERAL
-} from './lisp.js';
+} from './lisp.js'
 
 const test = require('ava')
 
-let leftParen = { type: LEFT_PAREN };
+let leftParen = { type: LEFT_PAREN }
 
-let rightParen = { type: RIGHT_PAREN };
+let rightParen = { type: RIGHT_PAREN }
 
 const numExp = n => ({
   type: NUM_LITERAL,
@@ -39,7 +39,7 @@ test('lex should lex right paren', t => {
 })
 
 test('lex should let you get a lot of parens going', t => {
-  t.deepEqual(lex("(((((((((((((((("), Array.apply(null, { length: 16 }).map(() => leftParen))
+  t.deepEqual(lex('(((((((((((((((('), Array.apply(null, { length: 16 }).map(() => leftParen))
 })
 
 test('lex should lex multiple right parens', t => {
@@ -60,6 +60,6 @@ test('lex should lex num literal', t => {
 })
 
 test('lex should lex numbers and parens', t => {
-  let expected = [leftParen, numExp(3), numExp(4), rightParen];
-  t.deepEqual(lex("( 3 4     )"), expected)
+  let expected = [leftParen, numExp(3), numExp(4), rightParen]
+  t.deepEqual(lex('( 3 4     )'), expected)
 })
