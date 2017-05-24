@@ -4,8 +4,8 @@
   "description": "",
   "main": "lisp.js",
   "scripts": {
-    "test": "ava **/*_test.js",
-    "watch": "ava --watch **/*_test.js *_test.js",
+    "test": "ava",
+    "watch": "ava --watch",
     "build": "babel lisp.js"
   },
   "author": "Alice Pote",
@@ -18,6 +18,10 @@
   },
   "ava": {
     "babel": "inherit",
+    "files": [
+      "**/*_test.js",
+      "*_test.js"
+    ],
     "require": [
       "babel-register"
     ]
