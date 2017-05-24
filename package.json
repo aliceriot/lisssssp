@@ -4,8 +4,8 @@
   "description": "",
   "main": "lisp.js",
   "scripts": {
-    "test": "ava *_test.js",
-    "watch": "ava --watch lisp_test.js",
+    "test": "ava **/*_test.js",
+    "watch": "ava --watch **/*_test.js *_test.js",
     "build": "babel lisp.js"
   },
   "author": "Alice Pote",
@@ -13,13 +13,18 @@
   "dependencies": {
     "ava": "^0.19.1",
     "babel-cli": "^6.24.1",
-    "babel-preset-env": "^1.5.1"
+    "babel-preset-env": "^1.5.1",
+    "sinon": "^2.3.1"
   },
   "ava": {
     "babel": "inherit",
-    "require": ["babel-register"]
+    "require": [
+      "babel-register"
+    ]
   },
   "babel": {
-    "presets": ["env"]
+    "presets": [
+      "env"
+    ]
   }
 }
