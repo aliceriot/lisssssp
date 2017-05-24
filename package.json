@@ -5,11 +5,21 @@
   "main": "lisp.js",
   "scripts": {
     "test": "ava lisp_test.js",
-    "watch": "ava --watch lisp_test.js"
+    "watch": "ava --watch lisp_test.js",
+    "build": "babel lisp.js"
   },
   "author": "Alice Pote",
   "license": "ISC",
   "dependencies": {
-    "ava": "^0.19.1"
+    "ava": "^0.19.1",
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.5.1"
+  },
+  "ava": {
+    "babel": "inherit",
+    "require": ["babel-register"]
+  },
+  "babel": {
+    "presets": ["env"]
   }
 }

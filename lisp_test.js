@@ -1,12 +1,10 @@
-const {
+import {
   lex,
-  __test__: {
     chop,
     LEFT_PAREN,
     RIGHT_PAREN,
     NUM_LITERAL
-  }
-} = require('./lisp')
+} from './lisp.js';
 
 const test = require('ava')
 

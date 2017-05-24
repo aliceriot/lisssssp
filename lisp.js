@@ -8,17 +8,17 @@
 
 // Before we can do that though, let's write down which things
 // are valid in our lisp!
-const LEFT_PAREN = 'LEFT_PAREN'
+export const LEFT_PAREN = 'LEFT_PAREN'
 
-const RIGHT_PAREN = 'RIGHT_PAREN'
+export const RIGHT_PAREN = 'RIGHT_PAREN'
 
-const NUM_LITERAL = 'NUM_LITERAL'
+export const NUM_LITERAL = 'NUM_LITERAL'
 
-const chop = (regex, string) => string
+export const chop = (regex, string) => string
   .replace(regex, '')
   .replace(/^\s*/, '')
 
-const lex = (string, tokens = []) => {
+export const lex = (string, tokens = []) => {
   // handle base case
   if (string === '') {
     return []
@@ -42,16 +42,4 @@ const lex = (string, tokens = []) => {
   }
 
   return []
-}
-
-module.exports = {
-  lex: lex,
-
-  __test__: {
-    LEFT_PAREN,
-    RIGHT_PAREN,
-    NUM_LITERAL,
-    chop
-  }
-
 }
