@@ -1,7 +1,6 @@
+import { lexer } from './lexer.js'
 // L I S S S S S P (LI5P)
 //
-// I'm writing lisp, in JS! It's going to be terrible
-// and also fun.
 
 // First, we need a lexer. Let's write one! A good lexer will
 // take a string and return the tokens that make up that string.
@@ -14,32 +13,10 @@ export const RIGHT_PAREN = 'RIGHT_PAREN'
 
 export const NUM_LITERAL = 'NUM_LITERAL'
 
-export const chop = (regex, string) => string
-  .replace(regex, '')
-  .replace(/^\s*/, '')
+export const LISP_TOKEN_MANIFEST = [
+  { type: LEFT_PAREN, regex: /^\(/ },
+  { type: RIGHT_PAREN, regex: /^\)/ },
+  { type: NUM_LITERAL, regex: /^\d+/, valueFunc: parseInt }
+];
 
-export const lex = (string, tokens = []) => {
-  // handle base case
-  if (string === '') {
-    return []
-  }
-
-  // parentheses
-  if (string.match(/^\(/)) {
-    return tokens.concat({ type: LEFT_PAREN }, lex(chop(/^\(/, string)))
-  }
-
-  if (string.match(/^\)/)) {
-    return tokens.concat({type: RIGHT_PAREN}, lex(chop(/^\)/, string)))
-  }
-
-  // number literals
-  if (string.match(/^\d+/)) {
-    return tokens.concat({
-      type: NUM_LITERAL,
-      value: parseInt(string.match(/^\d+/))
-    }, lex(chop(/^\d+/, string)))
-  }
-
-  return []
-}
+export const lex = lexer(LISP_TOKEN_MANIFEST)

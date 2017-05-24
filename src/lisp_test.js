@@ -16,14 +16,6 @@ const numExp = n => ({
   value: n
 })
 
-test('chop should remove characters matching regex', t => {
-  t.is(chop(/abc/, 'abcdef'), 'def')
-})
-
-test('chop should remove leading whitespace, after character matches', t => {
-  t.is(chop(/abc/, 'abc  def'), 'def')
-})
-
 test('lex should lex left paren', t => {
   let string = '('
   t.deepEqual(lex(string), [leftParen])
