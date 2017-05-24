@@ -15,10 +15,14 @@ export const chop = (regex, string) => string
   .replace(regex, '')
   .replace(/^\s*/, '')
 
-export function AmbiguousLexingError (tokens) {
-  this.message = 'I was trying to parse your code but I could not disambiguate these tokens:\n'
-  this.message += JSON.stringify(tokens)
-  this.name = 'AmbiguousLexingError'
+export const AmbiguousLexingError = tokens => {
+  let message = 'I was trying to parse your code but I could not disambiguate these tokens:\n'
+  message += JSON.stringify(tokens)
+
+  return {
+    message: message,
+    name: 'AmbiguousLexingError'
+  };
 }
 
 export const removeEmpties = obj => Object.keys(obj).length !== 0

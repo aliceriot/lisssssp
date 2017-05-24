@@ -7,7 +7,8 @@
     "test": "ava",
     "watch": "ava --watch",
     "lint": "standard",
-    "fmt": "standard --fix"
+    "fmt": "standard --fix",
+    "repl": "babel-node"
   },
   "author": "Alice Pote",
   "license": "ISC",
