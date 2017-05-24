@@ -50,6 +50,9 @@ export const lexer = curry((tokenManifest, string) => {
       throw AmbiguousLexingError(newTokens)
     }
 
+    // this needs more error handling, in particular if we get into a situation where
+    // none of the declared token types match the string we'll do some weird stuff here
+    // basically, if we get to here and newString === undefined we should throw an exception
     tokens = tokens.concat(newTokens)
     strncpy = newString
   }
