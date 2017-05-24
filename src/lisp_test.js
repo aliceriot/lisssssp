@@ -2,7 +2,6 @@ import test from 'ava'
 
 import {
   lex,
-  chop,
   LEFT_PAREN,
   RIGHT_PAREN,
   NUM_LITERAL

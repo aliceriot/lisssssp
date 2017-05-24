@@ -1,4 +1,4 @@
-import { curry } from './util';
+import { curry } from './functools';
 
 // Lexer-Generator
 // 
@@ -11,4 +11,9 @@ import { curry } from './util';
 // pick the relevant characters off of the beginning of the string
 // being parsed.
 
-export const lexer = curry(
+export const chop = (regex, string) => string
+  .replace(regex, '')
+  .replace(/^\s*/, '')
+
+export const lexer = curry((tokenManifest, string) => {
+});
