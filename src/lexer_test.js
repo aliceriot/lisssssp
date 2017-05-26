@@ -14,7 +14,7 @@ import {
   RIGHT_BRACKET,
   NUM_LITERAL,
   STRING_LITERAL,
-  IDENTIFIER,
+  IDENTIFIER
 } from './lisp.js'
 
 let leftParen = { type: LEFT_PAREN }
@@ -63,6 +63,17 @@ test('AmbiguousLexingError should return an object', t => {
 test('AmbiguousLexingError should return a thing suitable for "throw"', t => {
   t.throws(() => {
     throw AmbiguousLexingError('HEY')
+  })
+})
+
+test('lexer should throw if you supply it with badly formed tokens', t => {
+  let collidingTokens = [
+    { type: 'HEY', regex: /^\D+/ },
+    { type: 'YOU', regex: /^[a-z]+/ }
+  ];
+  let lex = lexer(collidingTokens)
+  t.throws(() => {
+    lex('this will throw')
   })
 })
 
@@ -119,13 +130,13 @@ test('lex should mix strings, nums, parens', t => {
   let lisp = '("foo" 3 345 () )'
   let expected = [
     leftParen,
-    stringLiteral("foo"),
+    stringLiteral('foo'),
     numExp(3),
     numExp(345),
     leftParen,
     rightParen,
     rightParen
-  ];
+  ]
   t.deepEqual(lex(lisp), expected)
 })
 
@@ -140,17 +151,17 @@ test('lex should support slightly more complicated expressions', t => {
   let expected = [
     leftParen,
     leftParen,
-    identifier("lambda"),
+    identifier('lambda'),
     leftParen,
     identifier('x'),
     rightParen,
     identifier('x'),
     rightParen,
-    stringLiteral("lambda wow"),
-    rightParen,
+    stringLiteral('lambda wow'),
+    rightParen
   ]
   t.deepEqual(lex(lambda), expected)
-});
+})
 
 test('lex should let you use square brackets for function args', t => {
   let lisp = '((lambda [x y] (add x y)) 1 2)'
@@ -159,7 +170,7 @@ test('lex should let you use square brackets for function args', t => {
     identifier('x'), identifier('y'), rightBracket, leftParen,
     identifier('add'), identifier('x'), identifier('y'),
     rightParen, rightParen, numExp(1), numExp(2), rightParen
-  ];
+  ]
   t.deepEqual(lex(lisp), expected)
-
 })
+

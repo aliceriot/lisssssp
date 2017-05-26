@@ -21,8 +21,8 @@ export const IDENTIFIER = 'IDENTIFIER'
 
 export const parseString = match => {
   return match[0]
-    .replace(/^"/, "")
-    .replace(/"$/, "")
+    .replace(/^"/, '')
+    .replace(/"$/, '')
 }
 
 export const getIdentifier = match => match[0]

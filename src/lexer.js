@@ -10,6 +10,11 @@ import { curry } from './functools'
 // the regular expression should be well-formed so as to just
 // pick the relevant characters off of the beginning of the string
 // being parsed.
+// 
+// These 'token manifests' can also supply an optional 'valueFunc',
+// which can be used to generate a value from the characters matching
+// the token. The 'valueFunc' will be called with the return value
+// of calling `.match` on the string with the supplied regular expression.
 
 export const chop = (regex, string) => string
   .replace(regex, '')

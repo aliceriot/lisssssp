@@ -4,10 +4,10 @@ import {
   lex,
   parseString,
   getIdentifier
-} from './lisp.js';
+} from './lisp.js'
 
 test('it should define a lexer', t => {
-  t.truthy(lex("()"))
+  t.truthy(lex('()'))
 })
 
 test('parseString should remove double quotes', t => {
