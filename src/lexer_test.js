@@ -70,7 +70,7 @@ test('lexer should throw if you supply it with badly formed tokens', t => {
   let collidingTokens = [
     { type: 'HEY', regex: /^\D+/ },
     { type: 'YOU', regex: /^[a-z]+/ }
-  ];
+  ]
   let lex = lexer(collidingTokens)
   t.throws(() => {
     lex('this will throw')
@@ -173,4 +173,3 @@ test('lex should let you use square brackets for function args', t => {
   ]
   t.deepEqual(lex(lisp), expected)
 })
-

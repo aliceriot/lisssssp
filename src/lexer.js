@@ -10,7 +10,7 @@ import { curry } from './functools'
 // the regular expression should be well-formed so as to just
 // pick the relevant characters off of the beginning of the string
 // being parsed.
-// 
+//
 // These 'token manifests' can also supply an optional 'valueFunc',
 // which can be used to generate a value from the characters matching
 // the token. The 'valueFunc' will be called with the return value
@@ -27,7 +27,7 @@ export const AmbiguousLexingError = tokens => {
   return {
     message: message,
     name: 'AmbiguousLexingError'
-  };
+  }
 }
 
 export const removeEmpties = obj => Object.keys(obj).length !== 0
