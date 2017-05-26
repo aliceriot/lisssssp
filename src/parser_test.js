@@ -44,6 +44,6 @@ test('checkBracketBalance should return true if the brackets are balanced', t =>
 
 test('checkBracketBalance should throw if the brackets are not balanced', t => {
   ['[[', '[]]', '[[[][][]]]]]]', '(([ [))'].forEach(unbalanced => {
-    t.throws(() => checkBracketBalance(lex(bracketString)))
+    t.throws(() => checkBracketBalance(lex(unbalanced)))
   })
 })
