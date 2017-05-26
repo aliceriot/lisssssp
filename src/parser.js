@@ -1,24 +1,24 @@
-import { curry } from './functools';
+import { curry } from './functools'
 import {
   LEFT_PAREN,
   LEFT_BRACKET,
   RIGHT_PAREN,
-  RIGHT_BRACKET,
-} from './lisp';
+  RIGHT_BRACKET
+} from './lisp'
 
 // Parser!
-// 
+//
 // Here is our parser. It takes a list of tokens and builds it into an AST,
 // which we can then interpret.
 
 export const UnmatchedParenthesesError = () => ({
-  message: "You program does not have matching parentheses",
+  message: 'You program does not have matching parentheses',
   name: 'AmbiguousLexingError'
 })
 
 export const throwIfNegative = num => {
   if (num < 0) {
-    throw UnmatchedParenthesesError();
+    throw UnmatchedParenthesesError()
   }
   return num
 }
@@ -40,4 +40,4 @@ export const checkParenBalance = checkForBalance(LEFT_PAREN, RIGHT_PAREN)
 
 export const checkBracketBalance = checkForBalance(LEFT_BRACKET, RIGHT_BRACKET)
 
-// const parser = 
+// const parser =

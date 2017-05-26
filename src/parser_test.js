@@ -6,7 +6,7 @@ import {
   throwIfNegative,
   checkParenBalance,
   checkBracketBalance
-} from './parser.js';
+} from './parser.js'
 
 test('UnmatchedParenthesesError should return an object', t => {
   t.deepEqual(['message', 'name'], Object.keys(UnmatchedParenthesesError()))
@@ -38,7 +38,7 @@ test('checkParenBalance should throw if the parens are not balanced', t => {
 
 test('checkBracketBalance should return true if the brackets are balanced', t => {
   ['[]', '[[]]', '[][[[[]]]]', '((lambda [x] (add x y)))'].forEach(bracketString => {
-    t.true(checkBracketBalance(lex(bracketString)));
+    t.true(checkBracketBalance(lex(bracketString)))
   })
 })
 
