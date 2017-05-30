@@ -89,7 +89,7 @@ test('lexer should throw if you supply it with badly formed tokens', t => {
 })
 
 test('lexer should throw if you dont supply a token that matches your string', t => {
-  let insufficientTokens = [{ type: 'just words', regex: /^\w+/ }];
+  let insufficientTokens = [{ type: 'just words', regex: /^\w+/ }]
   let lex = lexer(insufficientTokens)
   t.throws(() => {
     lex('((just a (little lisp)))')
@@ -192,4 +192,3 @@ test('lex should let you use square brackets for function args', t => {
   ]
   t.deepEqual(lex(lisp), expected)
 })
-

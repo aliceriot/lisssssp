@@ -36,7 +36,7 @@ export const UnmatchedTokenError = string => {
   return {
     message: message,
     name: 'UnmatchedTokenError'
-  };
+  }
 }
 
 export const removeEmpties = obj => Object.keys(obj).length !== 0
@@ -69,7 +69,7 @@ export const lexer = curry((tokenManifest, string) => {
     }
 
     if (newString === undefined) {
-      throw UnmatchedTokenError(strncpy);
+      throw UnmatchedTokenError(strncpy)
     }
 
     tokens = tokens.concat(newTokens)
