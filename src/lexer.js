@@ -30,6 +30,15 @@ export const AmbiguousLexingError = tokens => {
   }
 }
 
+export const UnmatchedTokenError = string => {
+  let message = `I couldn't find a match with a declared token when parsing:\n${string}`
+
+  return {
+    message: message,
+    name: 'UnmatchedTokenError'
+  };
+}
+
 export const removeEmpties = obj => Object.keys(obj).length !== 0
 
 export const lexer = curry((tokenManifest, string) => {
@@ -59,9 +68,10 @@ export const lexer = curry((tokenManifest, string) => {
       throw AmbiguousLexingError(newTokens)
     }
 
-    // this needs more error handling, in particular if we get into a situation where
-    // none of the declared token types match the string we'll do some weird stuff here
-    // basically, if we get to here and newString === undefined we should throw an exception
+    if (newString === undefined) {
+      throw UnmatchedTokenError(strncpy);
+    }
+
     tokens = tokens.concat(newTokens)
     strncpy = newString
   }

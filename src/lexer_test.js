@@ -3,6 +3,7 @@ import test from 'ava'
 import {
   chop,
   AmbiguousLexingError,
+  UnmatchedTokenError,
   lexer,
   removeEmpties
 } from './lexer.js'
@@ -66,6 +67,16 @@ test('AmbiguousLexingError should return a thing suitable for "throw"', t => {
   })
 })
 
+test('UnmatchedTokenError should return an object', t => {
+  t.deepEqual(['message', 'name'], Object.keys(UnmatchedTokenError('HI')))
+})
+
+test('UnmatchedTokenError should return a thing suitable for "throw"', t => {
+  t.throws(() => {
+    throw UnmatchedTokenError('HEY')
+  })
+})
+
 test('lexer should throw if you supply it with badly formed tokens', t => {
   let collidingTokens = [
     { type: 'HEY', regex: /^\D+/ },
@@ -74,6 +85,14 @@ test('lexer should throw if you supply it with badly formed tokens', t => {
   let lex = lexer(collidingTokens)
   t.throws(() => {
     lex('this will throw')
+  })
+})
+
+test('lexer should throw if you dont supply a token that matches your string', t => {
+  let insufficientTokens = [{ type: 'just words', regex: /^\w+/ }];
+  let lex = lexer(insufficientTokens)
+  t.throws(() => {
+    lex('((just a (little lisp)))')
   })
 })
 
@@ -173,3 +192,4 @@ test('lex should let you use square brackets for function args', t => {
   ]
   t.deepEqual(lex(lisp), expected)
 })
+
