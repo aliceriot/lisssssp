@@ -13,7 +13,7 @@ import {
 
 export const UnmatchedParenthesesError = () => ({
   message: 'You program does not have matching parentheses',
-  name: 'AmbiguousLexingError'
+  name: 'UnmatchedParenthesesError'
 })
 
 export const throwIfNegative = num => {
@@ -24,13 +24,17 @@ export const throwIfNegative = num => {
 }
 
 export const checkForBalance = curry((leftType, rightType, tokens) => {
-  let [leftCount, rightCount] = tokens.reduce(([leftCount, rightCount], token) => {
-    let nleftCount = throwIfNegative(token.type === leftType ? leftCount + 1 : leftCount)
-    let nrightCount = throwIfNegative(token.type === rightType ? rightCount + 1 : rightCount)
-    return [nleftCount, nrightCount]
-  }, [0, 0])
+  let count = tokens.reduce((count, token) => {
+    if (token.type === leftType) {
+      return throwIfNegative(count + 1)
+    } 
+    if ( token.type === rightType) {
+      return throwIfNegative(count - 1)
+    }
+    return count
+  }, 0)
 
-  if (leftCount !== rightCount) {
+  if (count !== 0) {
     throw UnmatchedParenthesesError()
   }
   return true
