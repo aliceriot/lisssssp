@@ -27,8 +27,8 @@ export const checkForBalance = curry((leftType, rightType, tokens) => {
   let count = tokens.reduce((count, token) => {
     if (token.type === leftType) {
       return throwIfNegative(count + 1)
-    } 
-    if ( token.type === rightType) {
+    }
+    if (token.type === rightType) {
       return throwIfNegative(count - 1)
     }
     return count
