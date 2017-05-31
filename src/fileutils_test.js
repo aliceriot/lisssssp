@@ -12,7 +12,7 @@ test('readFile should return a promise', async t => {
 })
 
 test('readFile should reject if file not found', async t => {
-  let badRead = readFile("fooooooo")
+  let badRead = readFile('fooooooo')
   await t.throws(badRead)
 })
 
@@ -22,6 +22,6 @@ test('readFileToString should return a promise', async t => {
 })
 
 test('readFileToString should reject if file not found', async t => {
-  const badRead = readFileToString("ASdfasdfasdfasDF")
+  const badRead = readFileToString('ASdfasdfasdfasDF')
   await t.throws(badRead)
 })
