@@ -39,7 +39,7 @@ export const UnmatchedTokenError = string => {
   }
 }
 
-export const removeEmpties = obj => Object.keys(obj).length !== 0
+export const isNotEmpty = obj => Object.keys(obj).length !== 0
 
 export const lexer = curry((tokenManifest, string) => {
   let strncpy = string.concat()
@@ -62,7 +62,7 @@ export const lexer = curry((tokenManifest, string) => {
           return {}
         }
       })
-      .filter(removeEmpties)
+      .filter(isNotEmpty)
 
     if (newTokens.length > 1) {
       throw AmbiguousLexingError(newTokens)

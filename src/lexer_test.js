@@ -5,7 +5,7 @@ import {
   AmbiguousLexingError,
   UnmatchedTokenError,
   lexer,
-  removeEmpties
+  isNotEmpty
 } from './lexer.js'
 import {
   lex,
@@ -41,21 +41,25 @@ const identifier = id => ({
   value: id
 })
 
-test('chop should remove characters matching regex', t => {
-  t.is(chop(/abc/, 'abcdef'), 'def')
-})
+function chopMacro (t, regex, input, expectation) {
+  t.is(chop(regex, input), expectation)
+}
 
-test('chop should remove leading whitespace, after character matches', t => {
-  t.is(chop(/abc/, 'abc  def'), 'def')
-})
+chopMacro.title = (provided, regex, input, expecation) => `chop(${regex}, ${input}) should be ${expecation}`
 
-test('remove empties should return empty for an empty object', t => {
-  t.false(removeEmpties({}))
-})
+test(chopMacro, /abc/, 'abcdef', 'def')
+test(chopMacro, /abc/, 'abc def', 'def')
 
-test('remove removeEmpties should return true for a non-empty object', t => {
-  t.true(removeEmpties({foo: 'bar'}))
-})
+function isNotEmptyMacro (t, input, expectation) {
+  t.is(isNotEmpty(input), expectation)
+}
+
+isNotEmptyMacro.title = (provided, input, expectation) => (
+  `isNotEmpty(${JSON.stringify(input)}) should be ${expectation}`
+)
+
+test(isNotEmptyMacro, {}, false)
+test(isNotEmptyMacro, { foo: "bar" }, true)
 
 test('AmbiguousLexingError should return an object', t => {
   t.deepEqual(['message', 'name'], Object.keys(AmbiguousLexingError('foobar')))
@@ -96,31 +100,31 @@ test('lexer should throw if you dont supply a token that matches your string', t
   })
 })
 
-test('lex should lex left paren', t => {
-  t.deepEqual(lex('('), [leftParen])
-  t.deepEqual(lex('(('), [1, 2].map(() => leftParen))
-})
+const stringMultiply = (n, string) => (
+  Array.apply("", { length: n }).map(() => string).join("")
+)
 
-test('lex should lex right paren', t => {
-  t.deepEqual(lex(')'), [{ type: RIGHT_PAREN }])
-  t.deepEqual(lex('))'), [1, 2].map(() => rightParen))
-})
+const tokenArray = (n, type) => (
+  Array.apply("", { length: n }).map(() => ({ type: type }))
+)
 
-test('lex should let you get a lot of parens going', t => {
-  t.deepEqual(lex('(((((((((((((((('), Array.apply(null, { length: 16 }).map(() => leftParen))
-})
+function lexingSingleCharacterMacro (t, string, type) {
+  t.deepEqual(lex(string), [{ type: type }])
+  t.deepEqual(lex(stringMultiply(10, string)), tokenArray(10, type))
+  t.deepEqual(
+    lex(`${string}  ${string}${string} ${string}`),
+    tokenArray(4, type)
+  )
+}
 
-test('lex should lex left bracket', t => {
-  t.deepEqual(lex('['), [leftBracket])
-  t.deepEqual(lex('[['), [1, 2].map(() => leftBracket))
-  t.deepEqual(lex('[[[[[ [[[[[[[ [[[['), Array.apply(null, { length: 16 }).map(() => leftBracket))
-})
+lexingSingleCharacterMacro.title = (provided, string, type) => (
+  `lex should lex ${type} (${string})`
+)
 
-test('lex should lex right bracket', t => {
-  t.deepEqual(lex(']'), [rightBracket])
-  t.deepEqual(lex(']]'), [1, 2].map(() => rightBracket))
-  t.deepEqual(lex(']]]]] ]]]]]]] ]]]]'), Array.apply(null, { length: 16 }).map(() => rightBracket))
-})
+test(lexingSingleCharacterMacro, '(', LEFT_PAREN)
+test(lexingSingleCharacterMacro, ')', RIGHT_PAREN)
+test(lexingSingleCharacterMacro, '[', LEFT_BRACKET)
+test(lexingSingleCharacterMacro, ']', RIGHT_BRACKET)
 
 test('lex should lex num literal', t => {
   [
