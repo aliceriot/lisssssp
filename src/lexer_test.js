@@ -59,7 +59,7 @@ isNotEmptyMacro.title = (provided, input, expectation) => (
 )
 
 test(isNotEmptyMacro, {}, false)
-test(isNotEmptyMacro, { foo: "bar" }, true)
+test(isNotEmptyMacro, { foo: 'bar' }, true)
 
 test('AmbiguousLexingError should return an object', t => {
   t.deepEqual(['message', 'name'], Object.keys(AmbiguousLexingError('foobar')))
@@ -101,11 +101,11 @@ test('lexer should throw if you dont supply a token that matches your string', t
 })
 
 const stringMultiply = (n, string) => (
-  Array.apply("", { length: n }).map(() => string).join("")
+  Array.apply('', { length: n }).map(() => string).join('')
 )
 
 const tokenArray = (n, type) => (
-  Array.apply("", { length: n }).map(() => ({ type: type }))
+  Array.apply('', { length: n }).map(() => ({ type: type }))
 )
 
 function lexingSingleCharacterMacro (t, string, type) {
