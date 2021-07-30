@@ -3,39 +3,29 @@
   "version": "1.0.0",
   "description": "",
   "main": "lisp.js",
+  "type": "commonjs",
   "scripts": {
-    "test": "ava",
-    "watch": "ava --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "lint": "standard",
-    "fmt": "standard --fix",
-    "repl": "babel-node"
+    "fmt": "prettier --write src/**/* --no-semi",
+    "repl": "ts-node",
+    "repl2": "node --loader ts-node/esm",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "typecheck:watch": "tsc --noEmit --watch"
   },
   "author": "Alice Pote",
   "license": "ISC",
   "dependencies": {
-    "ava": "^0.19.1",
-    "babel-cli": "^6.24.1",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-env": "^1.5.1",
-    "chalk": "^1.1.3",
-    "rollup": "^0.41.6",
-    "sinon": "^2.3.1",
-    "standard": "^10.0.2"
-  },
-  "ava": {
-    "babel": "inherit",
-    "files": [
-      "**/*_test.js",
-      "*_test.js"
-    ],
-    "require": [
-      "babel-register",
-      "babel-polyfill"
-    ]
-  },
-  "babel": {
-    "presets": [
-      "env"
-    ]
+    "@types/jest": "^26.0.24",
+    "@types/node": "^16.4.7",
+    "@types/sinon": "^10.0.2",
+    "jest": "^27.0.6",
+    "prettier": "^2.3.2",
+    "sinon": "^11.1.2",
+    "ts-jest": "^27.0.4",
+    "ts-node": "^10.1.0",
+    "typescript": "^4.3.5"
   }
 }
