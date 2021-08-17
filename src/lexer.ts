@@ -1,5 +1,4 @@
-import { curry } from "./functools"
-import { Token, TokenDescriptor } from "./lisp"
+import { Token, TOKEN_MANIFEST } from "./tokens"
 
 // Lexer-Generator
 //
@@ -40,41 +39,36 @@ export const UnmatchedTokenError = (string: string) => {
   }
 }
 
-export const lexer = curry(
-  (tokenManifest: TokenDescriptor[], string: string) => {
-    let strncpy = string.concat()
+export const lex = (code: string) => {
+  let strncpy = code.concat()
 
-    let tokens: Token[] = []
+  let tokens: Token[] = []
 
-    while (strncpy.length > 0) {
-      let newString
+  while (strncpy.length > 0) {
+    let newString
 
-      let newTokens: Token[] = []
+    let newTokens: Token[] = []
 
-      tokenManifest.forEach((tokenDescriptor: TokenDescriptor) => {
-        if (strncpy.match(tokenDescriptor.regex)) {
-          let token: Token = { type: tokenDescriptor.type }
-          if (tokenDescriptor.valueFunc !== undefined) {
-            token.value = tokenDescriptor.valueFunc(
-              strncpy.match(tokenDescriptor.regex)!
-            )
-          }
-          newString = chop(tokenDescriptor.regex, strncpy)
-          newTokens.push(token)
-        }
-      })
+    TOKEN_MANIFEST.forEach((tokenCls) => {
+      if (strncpy.match(tokenCls.regex)) {
+        let token = new tokenCls(strncpy.match(tokenCls.regex)!)
+        newString = chop(tokenCls.regex, strncpy)
 
-      if (newTokens.length > 1) {
-        throw AmbiguousLexingError(newTokens)
+        newString = chop(tokenCls.regex, strncpy)
+        newTokens.push(token)
       }
+    })
 
-      if (newString === undefined) {
-        throw UnmatchedTokenError(strncpy)
-      }
-
-      tokens = tokens.concat(newTokens)
-      strncpy = newString
+    if (newTokens.length > 1) {
+      throw AmbiguousLexingError(newTokens)
     }
-    return tokens
+
+    if (newString === undefined) {
+      throw UnmatchedTokenError(strncpy)
+    }
+
+    tokens = tokens.concat(newTokens)
+    strncpy = newString
   }
-)
+  return tokens
+}

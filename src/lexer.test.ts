@@ -1,22 +1,22 @@
-import { chop, AmbiguousLexingError, UnmatchedTokenError, lexer } from "./lexer"
-import { lex, Token, TokenVariant } from "./lisp"
+import { chop, AmbiguousLexingError, UnmatchedTokenError, lex } from "./lexer"
+import { Token, TokenVariant } from "./tokens"
 
-const leftParen: Token = { type: TokenVariant.LEFT_PAREN }
-const rightParen: Token = { type: TokenVariant.RIGHT_PAREN }
-const leftBracket: Token = { type: TokenVariant.LEFT_BRACKET }
-const rightBracket: Token = { type: TokenVariant.RIGHT_BRACKET }
+const leftParen: AToken = { type: TokenVariant.LEFT_PAREN }
+const rightParen: AToken = { type: TokenVariant.RIGHT_PAREN }
+const leftBracket: AToken = { type: TokenVariant.LEFT_BRACKET }
+const rightBracket: AToken = { type: TokenVariant.RIGHT_BRACKET }
 
-const numExp = (n: number): Token => ({
+const numExp = (n: number): AToken => ({
   type: TokenVariant.NUM_LITERAL,
   value: n,
 })
 
-const stringLiteral = (str: string): Token => ({
+const stringLiteral = (str: string): AToken => ({
   type: TokenVariant.STRING_LITERAL,
   value: str,
 })
 
-const identifier = (id: string): Token => ({
+const identifier = (id: string): AToken => ({
   type: TokenVariant.IDENTIFIER,
   value: id,
 })
@@ -83,7 +83,7 @@ const tokenArray = (n: number, type: TokenVariant) =>
   times(n).map(() => ({ type: type }))
 
 function lexingSingleCharacterMacro(string: string, type: TokenVariant) {
-  expect(lex(string)).toEqual([{ type: type }])
+  expect(lex(string)[0].variant).toEqual(type)
   expect(lex(stringMultiply(10, string))).toEqual(tokenArray(10, type))
   expect(lex(`${string}  ${string}${string} ${string}`)).toEqual(
     tokenArray(4, type)

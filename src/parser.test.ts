@@ -7,11 +7,11 @@ import {
 } from "./parser"
 
 test("UnmatchedParenthesesError should return an object", () => {
-  expect(["message", "name"]).toEqual( Object.keys(UnmatchedParenthesesError()))
+  expect(["message", "name"]).toEqual(Object.keys(UnmatchedParenthesesError()))
 })
 
 test('UnmatchedParenthesesError should return a thing suitable for "throw"', () => {
-expect(() => {
+  expect(() => {
     throw UnmatchedParenthesesError()
   }).toThrow()
 })
