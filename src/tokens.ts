@@ -67,27 +67,27 @@ abstract class ValueToken<T> extends AbstractToken {
 }
 
 // PUNCTUATION TOKENS
-class LeftParen extends NonValueToken {
+export class LeftParen extends NonValueToken {
   static variant = TokenVariant.LEFT_PAREN
   static regex = /^\(/
 }
 
-class RightParen extends NonValueToken {
+export class RightParen extends NonValueToken {
   static variant = TokenVariant.RIGHT_PAREN
   static regex = /^\)/
 }
 
-class LeftBracket extends NonValueToken {
+export class LeftBracket extends NonValueToken {
   static variant = TokenVariant.LEFT_BRACKET
   static regex = /^\[/
 }
 
-class RightBracket extends NonValueToken {
+export class RightBracket extends NonValueToken {
   static variant = TokenVariant.RIGHT_BRACKET
   static regex = /^\]/
 }
 
-class Comma extends NonValueToken {
+export class Comma extends NonValueToken {
   static variant = TokenVariant.COMMA
   static regex = /^\,/
 }
@@ -100,7 +100,7 @@ class Comma extends NonValueToken {
  * NumLiteral is going to be interpreted as a JavaScript Number,
  * so it can be a float or an integer (messy!)
  */
-class NumLiteral extends ValueToken<number> {
+export class NumLiteral extends ValueToken<number> {
   static variant = TokenVariant.NUM_LITERAL
 
   parseValue(match: RegExpMatchArray) {
@@ -110,7 +110,7 @@ class NumLiteral extends ValueToken<number> {
   static regex = /^\d+/
 }
 
-class StringLiteral extends ValueToken<string> {
+export class StringLiteral extends ValueToken<string> {
   static variant = TokenVariant.STRING_LITERAL
 
   parseValue(match: RegExpMatchArray) {
@@ -119,7 +119,7 @@ class StringLiteral extends ValueToken<string> {
   static regex = /^".*"/
 }
 
-class Identifier extends ValueToken<string> {
+export class Identifier extends ValueToken<string> {
   static variant = TokenVariant.IDENTIFIER
 
   parseValue(match: RegExpMatchArray) {
@@ -130,12 +130,12 @@ class Identifier extends ValueToken<string> {
 }
 
 // OPERATORS
-class AdditionOperator extends NonValueToken {
+export class AdditionOperator extends NonValueToken {
   static variant = TokenVariant.ADD
   static regex = /^\+/
 }
 
-class DivideOperator extends NonValueToken {
+export class DivideOperator extends NonValueToken {
   static variant = TokenVariant.DIVIDE
   static regex = /^\//
 }

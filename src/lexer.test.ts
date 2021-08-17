@@ -1,4 +1,5 @@
 import { chop, AmbiguousLexingError, UnmatchedTokenError, lex } from "./lexer"
+import {LeftParen} from "./tokens"
 import { Token, TokenVariant } from "./tokens"
 
 const leftParen: AToken = { type: TokenVariant.LEFT_PAREN }
@@ -82,7 +83,7 @@ const stringMultiply = (n: number, string: string): string =>
 const tokenArray = (n: number, type: TokenVariant) =>
   times(n).map(() => ({ type: type }))
 
-function lexingSingleCharacterMacro(string: string, type: TokenVariant) {
+function lexingSingleCharacterMacro(string: string, token: Token) {
   expect(lex(string)[0].variant).toEqual(type)
   expect(lex(stringMultiply(10, string))).toEqual(tokenArray(10, type))
   expect(lex(`${string}  ${string}${string} ${string}`)).toEqual(
@@ -97,7 +98,7 @@ lexingSingleCharacterMacro.title = (
 ) => `lex should lex ${type} (${string})`
 
 test(`lex should lex ${TokenVariant.LEFT_PAREN}`, () => {
-  lexingSingleCharacterMacro("(", TokenVariant.LEFT_PAREN)
+  lexingSingleCharacterMacro("(", new LeftParen)
 })
 test(`lex should lex ${TokenVariant.RIGHT_PAREN}`, () => {
   lexingSingleCharacterMacro(")", TokenVariant.RIGHT_PAREN)
@@ -107,7 +108,9 @@ test(`lex should lex ${TokenVariant.LEFT_BRACKET}`, () => {
   lexingSingleCharacterMacro("[", TokenVariant.LEFT_BRACKET)
 })
 test(`lex should lex ${TokenVariant.RIGHT_BRACKET}`, () => {
-  lexingSingleCharacterMacro("]", TokenVariant.RIGHT_BRACKET)
+  // lexingSingleCharacterMacro("]", TokenVariant.RIGHT_BRACKET)
+
+  expect(lex("]")).toEqual(new RightBracket)
 })
 
 test("lex should lex num literal", () => {
