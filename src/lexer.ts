@@ -16,6 +16,13 @@ import { Token, TOKEN_MANIFEST } from "./tokens"
 // the token. The 'valueFunc' will be called with the return value
 // of calling `.match` on the string with the supplied regular expression.
 
+/**
+ * A utility function that takes a regex and a string returns
+ * the result of chopping the substring matching that regex off
+ * the front of a string.
+ *
+ * This lets you go along and chop the bits matching your tokens off!
+ */
 export const chop = (regex: RegExp, string: string): string =>
   string.replace(regex, "").replace(/^\s*/, "")
 
@@ -49,9 +56,9 @@ export const lex = (code: string) => {
 
     let newTokens: Token[] = []
 
-    TOKEN_MANIFEST.forEach((tokenCls) => {
-      if (strncpy.match(tokenCls.regex)) {
-        let token = new tokenCls(strncpy.match(tokenCls.regex)!)
+    TOKEN_MANIFEST.forEach(([tokenBuilder, regex]) => {
+      if (strncpy.match(regex)) {
+        let token = tokenBuilder(strncpy.match(tokenCls.regex)!)
         newString = chop(tokenCls.regex, strncpy)
 
         newString = chop(tokenCls.regex, strncpy)

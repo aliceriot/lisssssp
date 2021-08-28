@@ -1,26 +1,12 @@
 import { chop, AmbiguousLexingError, UnmatchedTokenError, lex } from "./lexer"
-import {LeftParen} from "./tokens"
+import {LeftParen, NumLiteral, StringLiteral} from "./tokens"
 import { Token, TokenVariant } from "./tokens"
 
-const leftParen: AToken = { type: TokenVariant.LEFT_PAREN }
-const rightParen: AToken = { type: TokenVariant.RIGHT_PAREN }
-const leftBracket: AToken = { type: TokenVariant.LEFT_BRACKET }
-const rightBracket: AToken = { type: TokenVariant.RIGHT_BRACKET }
+const numExp = (n: number): Token => new NumLiteral(String(n))
 
-const numExp = (n: number): AToken => ({
-  type: TokenVariant.NUM_LITERAL,
-  value: n,
-})
+const stringLiteral = (str: string): Token => new StringLiteral(string)
 
-const stringLiteral = (str: string): AToken => ({
-  type: TokenVariant.STRING_LITERAL,
-  value: str,
-})
-
-const identifier = (id: string): AToken => ({
-  type: TokenVariant.IDENTIFIER,
-  value: id,
-})
+const identifier = (id: string): Token => new Identifier(id)
 
 function chopMacro(regex: RegExp, input: string, expectation: string) {
   expect(chop(regex, input)).toBe(expectation)
@@ -54,24 +40,24 @@ test('UnmatchedTokenError should return a thing suitable for "throw"', () => {
   }).toThrow()
 })
 
-test("lexer should throw if you supply it with badly formed tokens", () => {
-  let collidingTokens = [
-    { type: TokenVariant.LEFT_PAREN, regex: /^\D+/ },
-    { type: TokenVariant.RIGHT_PAREN, regex: /^[a-z]+/ },
-  ]
-  let lex = lexer(collidingTokens)
-  expect(() => {
-    lex("this will throw")
-  }).toThrow()
-})
+// test("lexer should throw if you supply it with badly formed tokens", () => {
+//   let collidingTokens = [
+//     { type: TokenVariant.LEFT_PAREN, regex: /^\D+/ },
+//     { type: TokenVariant.RIGHT_PAREN, regex: /^[a-z]+/ },
+//   ]
+//   let lex = lexer(collidingTokens)
+//   expect(() => {
+//     lex("this will throw")
+//   }).toThrow()
+// })
 
-test("lexer should throw if you dont supply a token that matches your string", () => {
-  let insufficientTokens = [{ type: TokenVariant.RIGHT_PAREN, regex: /^\w+/ }]
-  let lex = lexer(insufficientTokens)
-  expect(() => {
-    lex("((just a (little lisp)))")
-  }).toThrow()
-})
+// test("lexer should throw if you dont supply a token that matches your string", () => {
+//   let insufficientTokens = [{ type: TokenVariant.RIGHT_PAREN, regex: /^\w+/ }]
+//   let lex = lexer(insufficientTokens)
+//   expect(() => {
+//     lex("((just a (little lisp)))")
+//   }).toThrow()
+// })
 
 const times = (n: number) => Array(n).fill(undefined)
 
@@ -84,7 +70,7 @@ const tokenArray = (n: number, type: TokenVariant) =>
   times(n).map(() => ({ type: type }))
 
 function lexingSingleCharacterMacro(string: string, token: Token) {
-  expect(lex(string)[0].variant).toEqual(type)
+  expect(lex(string)[0].variant).toEqual(token.variant)
   expect(lex(stringMultiply(10, string))).toEqual(tokenArray(10, type))
   expect(lex(`${string}  ${string}${string} ${string}`)).toEqual(
     tokenArray(4, type)
