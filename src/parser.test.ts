@@ -1,4 +1,4 @@
-import { lex } from "./lisp"
+import { lex } from "./lexer"
 import {
   UnmatchedParenthesesError,
   throwIfNegative,

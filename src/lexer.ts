@@ -56,9 +56,9 @@ export const lex = (code: string) => {
 
     let newTokens: Token[] = []
 
-    TOKEN_MANIFEST.forEach(([tokenBuilder, regex]) => {
-      if (strncpy.match(regex)) {
-        let token = tokenBuilder(strncpy.match(tokenCls.regex)!)
+    TOKEN_MANIFEST.forEach((tokenCls) => {
+      if (strncpy.match(tokenCls.regex)) {
+        let token = new tokenCls(strncpy.match(tokenCls.regex)![0])
         newString = chop(tokenCls.regex, strncpy)
 
         newString = chop(tokenCls.regex, strncpy)

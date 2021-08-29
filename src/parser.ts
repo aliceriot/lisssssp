@@ -1,5 +1,5 @@
 import { curry } from "./functools"
-import { AToken, TokenVariant} from "./tokens"
+import { Token, TokenVariant } from "./tokens"
 
 // Parser!
 //
@@ -18,25 +18,33 @@ export const throwIfNegative = (num: number) => {
   return num
 }
 
-export const checkForBalance = curry((leftType: TokenVariant, rightType: TokenVariant, tokens: AToken[]) => {
-  let count = tokens.reduce((count: number, token: AToken): number => {
-    if (token.type === leftType) {
-      return throwIfNegative(count + 1)
-    }
-    if (token.type === rightType) {
-      return throwIfNegative(count - 1)
-    }
-    return count
-  }, 0)
+export const checkForBalance = curry(
+  (leftType: TokenVariant, rightType: TokenVariant, tokens: Token[]) => {
+    let count = tokens.reduce((count: number, token: Token): number => {
+      if (token.constructor.variant === leftType) {
+        return throwIfNegative(count + 1)
+      }
+      if (token.type === rightType) {
+        return throwIfNegative(count - 1)
+      }
+      return count
+    }, 0)
 
-  if (count !== 0) {
-    throw UnmatchedParenthesesError()
+    if (count !== 0) {
+      throw UnmatchedParenthesesError()
+    }
+    return true
   }
-  return true
-})
+)
 
-export const checkParenBalance = checkForBalance(TokenVariant.LEFT_PAREN, TokenVariant.RIGHT_PAREN)
+export const checkParenBalance = checkForBalance(
+  TokenVariant.LEFT_PAREN,
+  TokenVariant.RIGHT_PAREN
+)
 
-export const checkBracketBalance = checkForBalance(TokenVariant.LEFT_BRACKET, TokenVariant.RIGHT_BRACKET)
+export const checkBracketBalance = checkForBalance(
+  TokenVariant.LEFT_BRACKET,
+  TokenVariant.RIGHT_BRACKET
+)
 
 // const parser =
