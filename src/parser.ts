@@ -21,18 +21,27 @@ export const throwIfNegative = (num: number) => {
 export const checkForBalance = curry(
   (leftType: TokenVariant, rightType: TokenVariant, tokens: Token[]) => {
     let count = tokens.reduce((count: number, token: Token): number => {
-      if (token.constructor.variant === leftType) {
-        return throwIfNegative(count + 1)
+      if (token.variant === leftType) {
+        return count + 1
       }
-      if (token.type === rightType) {
-        return throwIfNegative(count - 1)
+
+      if (token.variant === rightType) {
+        let newCount = count - 1
+
+        if (newCount < 0) {
+          throw UnmatchedParenthesesError()
+        }
+
+        return newCount
       }
+
       return count
     }, 0)
 
     if (count !== 0) {
       throw UnmatchedParenthesesError()
     }
+
     return true
   }
 )
@@ -47,4 +56,7 @@ export const checkBracketBalance = checkForBalance(
   TokenVariant.RIGHT_BRACKET
 )
 
-// const parser =
+export function parser (tokens: Token[]) {
+  checkParenBalance(tokens)
+  checkBracketBalance(tokens)
+}

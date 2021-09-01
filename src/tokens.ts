@@ -40,6 +40,11 @@ abstract class AbstractToken {
    */
   static regex: RegExp
 
+  get variant(): TokenVariant {
+    // typescript doesn't like this, but I'm pretty convinced it's ok :)
+    // @ts-ignore
+    return this.constructor.variant
+  }
 }
 
 abstract class NonValueToken extends AbstractToken {
@@ -52,11 +57,6 @@ abstract class ValueToken<T> extends AbstractToken {
   constructor(match: string) {
     super()
     this.value = this.parseValue(match)
-  }
-
-  get variant(): TokenVariant {
-    // @ts-ignore
-    return this.constructor.variant
   }
 
   get hasValue() {

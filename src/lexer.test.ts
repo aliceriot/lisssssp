@@ -40,42 +40,9 @@ test('UnmatchedTokenError should return a thing suitable for "throw"', () => {
   }).toThrow()
 })
 
-// test("lexer should throw if you supply it with badly formed tokens", () => {
-//   let collidingTokens = [
-//     { type: TokenVariant.LEFT_PAREN, regex: /^\D+/ },
-//     { type: TokenVariant.RIGHT_PAREN, regex: /^[a-z]+/ },
-//   ]
-//   let lex = lexer(collidingTokens)
-//   expect(() => {
-//     lex("this will throw")
-//   }).toThrow()
-// })
-
-// test("lexer should throw if you dont supply a token that matches your string", () => {
-//   let insufficientTokens = [{ type: TokenVariant.RIGHT_PAREN, regex: /^\w+/ }]
-//   let lex = lexer(insufficientTokens)
-//   expect(() => {
-//     lex("((just a (little lisp)))")
-//   }).toThrow()
-// })
-
-const times = (n: number) => Array(n).fill(undefined)
-
-const stringMultiply = (n: number, string: string): string =>
-  times(n)
-    .map(() => string)
-    .join("")
-
-const tokenArray = (n: number, type: TokenVariant) =>
-  times(n).map(() => ({ type: type }))
-
 function lexingSingleCharacterMacro(string: string, token: Token) {
   // @ts-ignore
-  expect(lex(string)[0].constructor.variant).toEqual(token.constructor.variant)
-  // expect(lex(stringMultiply(10, string))).toEqual(tokenArray(10, type))
-  // expect(lex(`${string}  ${string}${string} ${string}`)).toEqual(
-  //   tokenArray(4, type)
-  // )
+  expect(lex(string)[0].variant).toEqual(token.variant)
 }
 
 lexingSingleCharacterMacro.title = (
