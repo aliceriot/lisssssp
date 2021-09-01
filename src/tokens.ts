@@ -1,4 +1,9 @@
 // This module defines the tokens in our lisp dialect
+//
+// We have two kinds of tokens, value-holding tokens and
+// non-value holding tokens. A value-holding token is
+// something like a number or a string. In that case we
+//
 
 /**
  * Enum holding strings for the possible token variants
@@ -40,6 +45,11 @@ abstract class AbstractToken {
    */
   static regex: RegExp
 
+  /**
+   * Get the TokenVariant assigned to this token!
+   *
+   * This pulls the variant off of the constructor.
+   */
   get variant(): TokenVariant {
     // typescript doesn't like this, but I'm pretty convinced it's ok :)
     // @ts-ignore
@@ -47,12 +57,20 @@ abstract class AbstractToken {
   }
 }
 
+/**
+ * Abstract class representing a token which holds no particular value
+ * (e.g. parentheses or other punctuation).
+ */
 abstract class NonValueToken extends AbstractToken {
   get hasValue() {
     return false
   }
 }
 
+/**
+ * Abstract class representing a token which wraps up a definite value,
+ * for instance a number or a string literal.
+ */
 abstract class ValueToken<T> extends AbstractToken {
   constructor(match: string) {
     super()
@@ -159,6 +177,9 @@ export type Token =
   | AdditionOperator
   | DivisionOperator
 
+/**
+ * A list of all the tokens that our lisp dialect supports
+ */
 export const TOKEN_MANIFEST = [
   LeftParen,
   RightParen,
@@ -169,5 +190,5 @@ export const TOKEN_MANIFEST = [
   StringLiteral,
   Identifier,
   AdditionOperator,
-  DivisionOperator
+  DivisionOperator,
 ]

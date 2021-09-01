@@ -1,5 +1,13 @@
 import { chop, AmbiguousLexingError, UnmatchedTokenError, lex } from "./lexer"
-import { Identifier, LeftBracket, LeftParen, NumLiteral, RightBracket, RightParen, StringLiteral } from "./tokens"
+import {
+  Identifier,
+  LeftBracket,
+  LeftParen,
+  NumLiteral,
+  RightBracket,
+  RightParen,
+  StringLiteral,
+} from "./tokens"
 import { Token, TokenVariant } from "./tokens"
 
 const numExp = (n: number): Token => new NumLiteral(String(n))
@@ -56,15 +64,15 @@ test(`lex should lex ${TokenVariant.LEFT_PAREN}`, () => {
 })
 
 test(`lex should lex ${TokenVariant.RIGHT_PAREN}`, () => {
-  lexingSingleCharacterMacro(")", new RightParen)
+  lexingSingleCharacterMacro(")", new RightParen())
 })
 
 test(`lex should lex ${TokenVariant.LEFT_BRACKET}`, () => {
-  lexingSingleCharacterMacro("[", new LeftBracket)
+  lexingSingleCharacterMacro("[", new LeftBracket())
 })
 
 test(`lex should lex ${TokenVariant.RIGHT_BRACKET}`, () => {
-  lexingSingleCharacterMacro("]", new RightBracket)
+  lexingSingleCharacterMacro("]", new RightBracket())
   expect(lex("]")).toEqual([new RightBracket()])
 })
 
@@ -83,7 +91,7 @@ test("lex should lex num literal", () => {
 })
 
 test("lex should lex numbers and parens", () => {
-  let expected = [new LeftParen(), numExp(3), numExp(4), new RightParen]
+  let expected = [new LeftParen(), numExp(3), numExp(4), new RightParen()]
   expect(lex("( 3 4     )")).toEqual(expected)
 })
 
@@ -95,13 +103,13 @@ test("lex should lex string literals", () => {
 test("lex should mix strings, nums, parens", () => {
   let lisp = '("foo" 3 345 () )'
   let expected = [
-    new LeftParen,
+    new LeftParen(),
     stringLiteral("foo"),
     numExp(3),
     numExp(345),
-    new LeftParen,
-    new RightParen,
-    new RightParen
+    new LeftParen(),
+    new RightParen(),
+    new RightParen(),
   ]
   expect(lex(lisp)).toEqual(expected)
 })
@@ -109,11 +117,11 @@ test("lex should mix strings, nums, parens", () => {
 test("lex should support identifiers", () => {
   let lisp = "(add 2 3)"
   let expected = [
-    new LeftParen,
+    new LeftParen(),
     identifier("add"),
     numExp(2),
     numExp(3),
-    new RightParen
+    new RightParen(),
   ]
   expect(lex(lisp)).toEqual(expected)
 })
@@ -121,16 +129,16 @@ test("lex should support identifiers", () => {
 test("lex should support slightly more complicated expressions", () => {
   let lambda = '((lambda (x) x) "lambda wow")'
   let expected = [
-    new LeftParen,
-    new LeftParen,
+    new LeftParen(),
+    new LeftParen(),
     identifier("lambda"),
-    new LeftParen,
+    new LeftParen(),
     identifier("x"),
-    new RightParen,
+    new RightParen(),
     identifier("x"),
-    new RightParen,
+    new RightParen(),
     stringLiteral("lambda wow"),
-    new RightParen,
+    new RightParen(),
   ]
   expect(lex(lambda)).toEqual(expected)
 })
@@ -138,22 +146,22 @@ test("lex should support slightly more complicated expressions", () => {
 test("lex should let you use square brackets for function args", () => {
   let lisp = "((lambda [x y] (add x y)) 1 2)"
   let expected = [
-    new LeftParen,
-    new LeftParen,
+    new LeftParen(),
+    new LeftParen(),
     identifier("lambda"),
-    new LeftBracket,
+    new LeftBracket(),
     identifier("x"),
     identifier("y"),
-    new RightBracket,
-    new LeftParen,
+    new RightBracket(),
+    new LeftParen(),
     identifier("add"),
     identifier("x"),
     identifier("y"),
-    new RightParen,
-    new RightParen,
+    new RightParen(),
+    new RightParen(),
     numExp(1),
     numExp(2),
-    new RightParen,
+    new RightParen(),
   ]
   expect(lex(lisp)).toEqual(expected)
 })

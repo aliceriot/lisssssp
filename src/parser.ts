@@ -56,7 +56,7 @@ export const checkBracketBalance = checkForBalance(
   TokenVariant.RIGHT_BRACKET
 )
 
-export function parser (tokens: Token[]) {
+export function parser(tokens: Token[]) {
   checkParenBalance(tokens)
   checkBracketBalance(tokens)
 }
