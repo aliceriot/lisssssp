@@ -1,20 +1,10 @@
 import { Token, TOKEN_MANIFEST } from "./tokens"
 
-// Lexer-Generator
+// Lexer
 //
-// This is a simple function that allows us to generate a lexer
-// for our little lisp. We feed it an array of object like
-//
-// { type: TOKEN_NAME, regex: /regex/ }
-//
-// the regular expression should be well-formed so as to just
-// pick the relevant characters off of the beginning of the string
-// being parsed.
-//
-// These 'token manifests' can also supply an optional 'valueFunc',
-// which can be used to generate a value from the characters matching
-// the token. The 'valueFunc' will be called with the return value
-// of calling `.match` on the string with the supplied regular expression.
+// This modules defines the lexer for our lisp dialect. It uses the
+// tokens declared in `./tokens` to parse a string into an array of
+// Token objects.
 
 /**
  * A utility function that takes a regex and a string returns
@@ -56,12 +46,11 @@ export const lex = (code: string) => {
 
     let newTokens: Token[] = []
 
-    TOKEN_MANIFEST.forEach((tokenCls) => {
-      if (strncpy.match(tokenCls.regex)) {
-        let token = new tokenCls(strncpy.match(tokenCls.regex)![0])
-        newString = chop(tokenCls.regex, strncpy)
-
-        newString = chop(tokenCls.regex, strncpy)
+    TOKEN_MANIFEST.forEach((TokenClass) => {
+      let match = strncpy.match(TokenClass.regex)
+      if (match) {
+        let token = new TokenClass(match[0])
+        newString = chop(TokenClass.regex, strncpy)
         newTokens.push(token)
       }
     })

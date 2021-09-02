@@ -31,7 +31,6 @@ export const checkForBalance = curry(
         if (newCount < 0) {
           throw UnmatchedParenthesesError()
         }
-
         return newCount
       }
 
@@ -56,7 +55,86 @@ export const checkBracketBalance = checkForBalance(
   TokenVariant.RIGHT_BRACKET
 )
 
-export function parser(tokens: Token[]) {
+function takeUntilMatch (
+  leftType: TokenVariant,
+  rightType: TokenVariant,
+  tokens: Token[]
+): [ Token[], Token[] ] {
+
+  let subList: Token[] = []
+  let rest: Token[] = []
+
+  tokens.reduce((count: number, token: Token): number => {
+    if (count === 0) {
+      rest.push(token)
+      return count
+    }
+
+    if (token.variant === rightType) {
+      subList.push(token)
+      return count - 1
+    }
+
+    if (token.variant === leftType) {
+      subList.push(token)
+      return count + 1
+    }
+    return count
+  }, 1)
+
+  return [ subList, rest ]
+}
+
+interface ASTNode {
+  token: Token
+  children: ASTNode[]
+}
+
+function buildAST (tokens: Token[]): ASTNode[] {
+  const [ token ] = tokens
+
+  if (
+    token.variant === TokenVariant.LEFT_BRACKET ||
+    token.variant === TokenVariant.LEFT_PAREN
+  ) {
+    const leftType = token.variant
+    const rightType = token.variant === TokenVariant.LEFT_BRACKET ?
+      TokenVariant.RIGHT_BRACKET : TokenVariant.RIGHT_PAREN
+
+    const [tillLeft, rest] = takeUntilMatch(
+      leftType,
+      rightType,
+      tokens.slice(1),
+    )
+
+    return [
+      {
+        token,
+        children: buildAST(tillLeft)
+      },
+      ...buildAST(rest)
+    ]
+  }
+  
+  if (
+    token.variant === TokenVariant.RIGHT_PAREN ||
+    token.variant === TokenVariant.RIGHT_BRACKET
+  ) {
+    return []
+  }
+
+  return [
+    {
+      token,
+      children: []
+    },
+    ...buildAST(tokens.slice(1))
+  ]
+}
+
+export function parse(tokens: Token[]) {
   checkParenBalance(tokens)
   checkBracketBalance(tokens)
+
+  return buildAST(tokens)
 }
