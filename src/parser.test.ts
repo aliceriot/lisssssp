@@ -1,5 +1,5 @@
 import { lex } from "./lexer"
-import { Token, TokenVariant } from './tokens'
+import { Token, TokenVariant } from "./tokens"
 import {
   UnmatchedParenthesesError,
   throwIfNegative,
@@ -72,29 +72,20 @@ test("takeUntilMatch should return a slice up until a match", () => {
 
 test("buildAST should build a simple AST", () => {
   let tokens = lex("(+ (+ 1 2) 3)")
-  // console.log(tokens);
-  // let ast = buildAST(tokens)
-  // console.log(ast);
+  console.log(tokens);
+  let ast = buildAST(tokens)
+  console.log(ast);
 
-  // console.log(prettyPrint(
-  //             ast)
-  //            )
+  console.log(prettyPrint(
+              ast)
+             )
 })
-
-
 
 test("should be able to construct a more complicated AST", () => {
   let tokens = lex("(lambda (x y) (+ x y))(1 2)")
 
   let ast = buildAST(tokens)
-  console.log(ast);
+  console.log(ast)
 
-  console.log(
-    prettyPrint(
-      buildAST(
-        tokens
-      )
-    )
-  )
+  console.log(prettyPrint(buildAST(tokens)))
 })
-

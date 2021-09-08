@@ -60,32 +60,34 @@ export function takeUntilMatch(
   rightType: TokenVariant,
   tokens: Token[]
 ): [Token[], Token[]] {
-  let subList: Token[] = []
-  let rest: Token[] = []
+  let left: Token[] = []
+  let right: Token[] = []
 
   tokens.reduce((count: number, token: Token): number => {
     if (count === 0) {
-      rest.push(token)
+      right.push(token)
       return count
     }
 
     if (token.variant === rightType) {
       if (count - 1 !== 0) {
-        subList.push(token)
+        // this means we haven't yet found the matching one,
+        // so keep it in the left sublist
+        left.push(token)
       }
       return count - 1
     }
 
     if (token.variant === leftType) {
-      subList.push(token)
+      left.push(token)
       return count + 1
     }
 
-    subList.push(token)
+    left.push(token)
     return count
   }, 1)
 
-  return [subList, rest]
+  return [left, right]
 }
 
 interface ASTNode {
@@ -94,24 +96,25 @@ interface ASTNode {
 
 type AST = Array<ASTNode | AST>
 
+/**
+ * A pretty-printer for debugging purposes
+ */
 export function prettyPrint(tree: AST, indent = 0): string {
   let padding = " ".repeat(indent)
-  let lines = tree.map(
-    (node: ASTNode | AST) => {
-      if (Array.isArray(node)) {
-        return `${padding}[\n` + prettyPrint(node, indent + 2) + `${padding}]\n`
-      } else {
-        const token = node.token
+  let lines = tree.map((node: ASTNode | AST) => {
+    if (Array.isArray(node)) {
+      return `${padding}[\n` + prettyPrint(node, indent + 2) + `${padding}]\n`
+    } else {
+      const token = node.token
 
-        if (token.hasValue()) {
-          const value = token.value
-          return `${padding}<${node.token.variant} value=${value}>\n`
-        } else {
-          return `${padding}<${node.token.variant}>\n`
-        }
+      if (token.hasValue()) {
+        const value = token.value
+        return `${padding}<${node.token.variant} value=${value}>\n`
+      } else {
+        return `${padding}<${node.token.variant}>\n`
       }
     }
-  )
+  })
 
   return lines.join("")
 }
@@ -139,18 +142,14 @@ export function buildAST(tokens: Token[]): AST {
       tokens.slice(1)
     )
 
-    return [
-      buildAST(tillLeft),
-      ...buildAST(rest),
-    ]
+    return [buildAST(tillLeft), ...buildAST(rest)]
   }
 
   if (
     token.variant === TokenVariant.RIGHT_PAREN ||
     token.variant === TokenVariant.RIGHT_BRACKET
   ) {
-    return [
-    ]
+    return []
   }
 
   return [
