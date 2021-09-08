@@ -26,7 +26,7 @@ export enum TokenVariant {
   DIVIDE = "DIVIDE",
 }
 
-abstract class AbstractToken {
+abstract class AbstractToken<T> {
   /**
    * String enum to discriminate between the variants in our union type.
    */
@@ -38,7 +38,7 @@ abstract class AbstractToken {
    * A token like a parantheses or a bracket holds no value, it is
    * merely there or not. But a number literal can have many values!
    */
-  abstract get hasValue(): boolean
+  abstract hasValue(): this is ValueToken<T>
 
   /**
    * The regular expression for matching string literals for this token.
@@ -61,8 +61,8 @@ abstract class AbstractToken {
  * Abstract class representing a token which holds no particular value
  * (e.g. parentheses or other punctuation).
  */
-abstract class NonValueToken extends AbstractToken {
-  get hasValue() {
+abstract class NonValueToken extends AbstractToken<any> {
+  hasValue(): this is ValueToken<any> {
     return false
   }
 }
@@ -71,13 +71,13 @@ abstract class NonValueToken extends AbstractToken {
  * Abstract class representing a token which wraps up a definite value,
  * for instance a number or a string literal.
  */
-abstract class ValueToken<T> extends AbstractToken {
+abstract class ValueToken<T> extends AbstractToken<T> {
   constructor(match: string) {
     super()
     this.value = this.parseValue(match)
   }
 
-  get hasValue() {
+  hasValue(): this is ValueToken<T> {
     return true
   }
 
